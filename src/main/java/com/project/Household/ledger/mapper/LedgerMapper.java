@@ -9,7 +9,10 @@ import java.util.List;
 @MapperScan
 public interface LedgerMapper {
     int insertLedger (Ledger ledger);
+    int updateLedger(Ledger ledger);
+    int deleteLedger(Long id);
     //Ledger ledgerDetail(Long id);
     Ledger ledgerDetail(@Param("id") Long id);
     List<Ledger> ledgerList();
+
 }

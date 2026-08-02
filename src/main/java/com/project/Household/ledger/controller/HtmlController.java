@@ -56,4 +56,31 @@ public class HtmlController {
         return "list";
     }
 
+    //수정
+    @GetMapping("/ledger/edit")
+    public String edit(@RequestParam Long id, Model model){
+
+        Ledger ledger = ledgerService.ledgerDetail(id);
+
+        model.addAttribute("ledger", ledger);
+
+        return "edit";
+    }
+
+    @PostMapping("/ledger/update")
+    public String updateLedger(Ledger ledger){
+
+        ledgerService.updateLedger(ledger);
+
+        return "redirect:/ledger/detail?id=" + ledger.getId();
+    }
+
+    //삭제
+    @PostMapping("/ledger/delete")
+    public String delete(@RequestParam Long id, Model model){
+
+        ledgerService.deleteLedger(id);
+
+        return "redirect:/ledger/list";
+    }
 }

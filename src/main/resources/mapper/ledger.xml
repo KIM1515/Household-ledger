@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.Household.ledger.mapper.LedgerMapper">
     <insert id = "insertLedger">
-        insert into ledger (type, category, amount, memo, recordDate)
+        insert into ledger (type, category, amount, memo, record_date)
         values (#{type}, #{category}, #{amount}, #{memo}, #{recordDate})
 
         <selectKey keyProperty="id" resultType="long" order="AFTER">
@@ -24,17 +24,17 @@
         ORDER BY id DESC
     </select>
 
-    <update id = "editLedger">
+    <update id = "updateLedger">
         update ledger
         set type = #{type}
             ,category = #{category}
             ,amount = #{amount}
             ,memo = #{memo}
-            ,recordDate = #{recordDate}
+            ,record_date  = #{recordDate}
         WHERE id = #{id}
     </update>
 
-    <delete id="ledgerDetail">
+    <delete id="deleteLedger">
         delete
         FROM ledger
         WHERE id = #{id}

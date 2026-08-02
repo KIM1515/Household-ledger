@@ -4,5 +4,5 @@ CREATE TABLE ledger (
       category VARCHAR(30) NOT NULL,    -- 식비, 교통비, 월급 등
       amount INTEGER NOT NULL,
       memo VARCHAR(200),
-      recordDate DATE NOT NULL
+      record_date DATE NOT NULL
 );

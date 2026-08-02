@@ -106,6 +106,14 @@
         .btn:hover{
             opacity:0.9;
         }
+
+        .delete-btn {
+            background-color: #f44336;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 
@@ -170,11 +178,15 @@
                 수정
             </button>
 
-            <button type="button"
-                    class="btn delete-btn"
-                    th:onclick="|location.href='@{/ledger/delete(id=${ledger.id})}'|">
-                삭제
-            </button>
+            <form action="/ledger/delete" method="post" style="flex:1;">
+                <input type="hidden"
+                       name="id"
+                       th:value="${ledger.id}">
+
+                <button type="submit" class="delete-btn">
+                    삭제
+                </button>
+            </form>
 
         </div>
         <div class="btn-area">

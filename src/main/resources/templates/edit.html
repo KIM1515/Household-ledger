@@ -1,10 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>가계부 수정</title>
+
+  <style>
+
+    body {
+      background-color: #f5f6fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 450px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 25px;
+    }
+
+    .item {
+      margin-bottom: 18px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+
+    }
+
+
+    .radio-area {
+      display:flex;
+      gap:20px;
+    }
+
+
+    .btn-area {
+      margin-top:25px;
+      display:flex;
+      gap:10px;
+    }
+
+
+    button {
+
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+
+    }
+
+
+    .save-btn {
+      background:#2196F3;
+    }
+
+
+    .cancel-btn {
+      background:#777;
+    }
+
+
+  </style>
+
 </head>
+
+
 <body>
 
+
+<div class="container">
+
+
+  <div class="title">
+    가계부 수정
+  </div>
+
+
+  <form action="/ledger/update" method="post">
+
+
+    <!-- id 전달 -->
+    <input type="hidden"
+           name="id"
+           th:value="${ledger.id}">
+
+
+    <div class="item">
+
+      <div class="label">
+        구분
+      </div>
+
+      <div class="radio-area">
+
+        <label>
+          <input type="radio"
+                 name="type"
+                 value="INCOME"
+                 th:checked="${ledger.type == 'INCOME'}">
+          수입
+        </label>
+
+
+        <label>
+          <input type="radio"
+                 name="type"
+                 value="EXPENSE"
+                 th:checked="${ledger.type == 'EXPENSE'}">
+          지출
+        </label>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="item">
+
+      <div class="label">
+        카테고리
+      </div>
+
+      <input type="text"
+             name="category"
+             th:value="${ledger.category}">
+
+    </div>
+
+
+
+
+    <div class="item">
+
+      <div class="label">
+        금액
+      </div>
+
+      <input type="number"
+             name="amount"
+             th:value="${ledger.amount}">
+
+    </div>
+
+
+
+
+    <div class="item">
+
+      <div class="label">
+        메모
+      </div>
+
+      <input type="text"
+             name="memo"
+             th:value="${ledger.memo}">
+
+    </div>
+
+
+
+
+
+    <div class="item">
+
+      <div class="label">
+        날짜
+      </div>
+
+      <input type="date"
+             name="recordDate"
+             th:value="${ledger.recordDate}">
+
+    </div>
+
+
+
+
+    <div class="btn-area">
+
+      <button type="submit"
+              class="save-btn">
+        수정 저장
+      </button>
+
+
+      <button type="button"
+              class="cancel-btn"
+              onclick="history.back()">
+        취소
+      </button>
+
+    </div>
+
+
+  </form>
+
+
+</div>
+
+
 </body>
+
 </html>

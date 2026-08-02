@@ -18,6 +18,16 @@ public class LedgerService {
         ledgerMapper.insertLedger(ledger);
     }
 
+    //수정
+    public void updateLedger(Ledger ledger){
+        ledgerMapper.updateLedger(ledger);
+    }
+
+    //삭제
+    public int deleteLedger(Long id){
+        return ledgerMapper.deleteLedger(id);
+    }
+
     //상세보기 조회
     public Ledger ledgerDetail(Long id){
         return ledgerMapper.ledgerDetail(id);
