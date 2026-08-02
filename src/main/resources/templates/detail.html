@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <title>입력 확인</title>
+
+    <style>
+        body {
+            background-color: #f5f6fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 450px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .value {
+            color: #222;
+        }
+
+        .income {
+            color: #2196F3;
+            font-weight: bold;
+        }
+
+        .expense {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        .btn-area {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-group{
+            display:flex;
+            gap:10px;
+            margin-top:25px;
+        }
+
+        .btn-area{
+            margin-top:10px;
+        }
+
+        .btn{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        .edit-btn{
+            flex:1;
+            background:#2196F3;
+        }
+
+        .delete-btn{
+            flex:1;
+            background:#F44336;
+        }
+
+        .list-btn{
+            background:#4CAF50;
+        }
+
+        .btn:hover{
+            opacity:0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>가계부 입력 조회</h2>
+
+        <div class="item">
+            <div class="label">구분</div>
+            <div class="value"
+                 th:text="${ledger.type == 'INCOME' ? '수입' : '지출'}"
+                 th:classappend="${ledger.type == 'INCOME'} ? 'income' : 'expense'">
+
+            </div>
+        </div>
+
+
+        <div class="item">
+            <div class="label">카테고리</div>
+            <div class="value"
+                 th:text="${ledger.category}">
+
+            </div>
+        </div>
+
+
+        <div class="item">
+            <div class="label">금액</div>
+            <div class="value"
+                 th:text="${ledger.amount + ' 원'}">
+
+            </div>
+        </div>
+
+
+        <div class="item">
+            <div class="label">메모</div>
+            <div class="value"
+                 th:text="${ledger.memo}">
+
+            </div>
+        </div>
+
+
+        <div class="item">
+            <div class="label">날짜</div>
+            <div class="value"
+                 th:text="${ledger.recordDate}">
+
+            </div>
+        </div>
+
+
+
+        <div class="btn-group">
+
+            <button type="button"
+                    class="btn edit-btn"
+                    th:onclick="|location.href='@{/ledger/edit(id=${ledger.id})}'|">
+                수정
+            </button>
+
+            <button type="button"
+                    class="btn delete-btn"
+                    th:onclick="|location.href='@{/ledger/delete(id=${ledger.id})}'|">
+                삭제
+            </button>
+
+        </div>
+        <div class="btn-area">
+            <button type="button" onclick="location.href='/ledger/list'">
+                목록으로
+            </button>
+
+        </div>
+
+</body>
+</html>

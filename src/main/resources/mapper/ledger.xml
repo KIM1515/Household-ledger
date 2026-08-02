@@ -4,9 +4,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.Household.ledger.mapper.LedgerMapper">
     <insert id = "insertLedger">
-        insert into ledger (id, type, category, amount, memo, record_date)
-        values (#{id}, #{type}, #{category}, #{amount}, #{memo},, #{record_date})
+        insert into ledger (type, category, amount, memo, recordDate)
+        values (#{type}, #{category}, #{amount}, #{memo}, #{recordDate})
+
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            SELECT currval(pg_get_serial_sequence('ledger', 'id'))
+        </selectKey>
     </insert>
+
+    <select id="ledgerDetail">
+        SELECT *
+        FROM ledger
+        WHERE id = #{id}
+    </select>
+
+    <select id="ledgerList">
+        SELECT *
+        FROM ledger
+        ORDER BY id DESC
+    </select>
+
+    <update id = "editLedger">
+        update ledger
+        set type = #{type}
+            ,category = #{category}
+            ,amount = #{amount}
+            ,memo = #{memo}
+            ,recordDate = #{recordDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="ledgerDetail">
+        delete
+        FROM ledger
+        WHERE id = #{id}
+    </delete>
 
     <!--카테고리별 합계-->
     <select id="sumByCategory" resultType="map">
@@ -17,6 +49,7 @@
         GROUP BY category
         ORDER BY total DESC
     </select>
+
     <!--월 평균 지출-->
     <select id="avgMonthlyExpense" resultType="double">
         SELECT COALESCE(SUM(amount), 0) / GREATEST(COUNT(DISTINCT to_char(record_date,'YYYY-MM')), 1)

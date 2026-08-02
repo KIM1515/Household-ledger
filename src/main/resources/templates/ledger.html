@@ -6,17 +6,20 @@
 </head>
 <body>
     <div class="ledger-form">
+        <h2>가계부 입력</h2>
+
+        <form action="/ledger/save" method="post">
 
         <div class="form-group">
             <label>구분</label>
             <div>
                 <label>
-                    <input type="radio" name="type" value="INCOME">
+                    <input type="radio" name="type" value="INCOME" required>
                     수입
                 </label>
 
                 <label>
-                    <input type="radio" name="type" value="EXPENSE">
+                    <input type="radio" name="type" value="EXPENSE" required>
                     지출
                 </label>
             </div>
@@ -68,7 +71,7 @@
                 저장
             </button>
         </div>
-
+        </form>
     </div>
 </body>
 </html>

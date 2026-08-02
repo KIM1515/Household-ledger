@@ -2,12 +2,14 @@ package com.project.Household.ledger.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
-public class ledger {
-    private String id;
+public class Ledger {
+    private Long id;
     private String type;
     private String category;
-    private double amount;
+    private Integer amount;
     private String memo;
-    private String record_date;
+    private LocalDate recordDate;
 }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>가계부 목록</title>
+
+  <style>
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f5f6fa;
+    }
+
+    .container{
+      width:900px;
+      margin:50px auto;
+    }
+
+    h2{
+      text-align:center;
+      margin-bottom:30px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:white;
+      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    th{
+      background:#4CAF50;
+      color:white;
+      padding:12px;
+    }
+
+    td{
+      padding:12px;
+      border-bottom:1px solid #ddd;
+      text-align:center;
+    }
+
+    tr:hover{
+      background:#f9f9f9;
+    }
+
+    .income{
+      color:#2196F3;
+      font-weight:bold;
+    }
+
+    .expense{
+      color:#F44336;
+      font-weight:bold;
+    }
+
+    .btn{
+      text-decoration:none;
+      color:white;
+      background:#4CAF50;
+      padding:6px 12px;
+      border-radius:5px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>가계부 목록</h2>
+
+  <table>
+
+    <thead>
+    <tr>
+      <th>번호</th>
+      <th>구분</th>
+      <th>카테고리</th>
+      <th>금액</th>
+      <th>메모</th>
+      <th>날짜</th>
+      <th>상세</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="ledger : ${ledgerList}">
+
+      <td th:text="${ledger.id}"></td>
+
+      <td
+              th:text="${ledger.type == 'INCOME' ? '수입' : '지출'}"
+              th:classappend="${ledger.type == 'INCOME'} ? 'income' : 'expense'">
+      </td>
+
+      <td th:text="${ledger.category}"></td>
+
+      <td th:text="${#numbers.formatInteger(ledger.amount, 3, 'COMMA') + '원'}"></td>
+
+      <td th:text="${ledger.memo}"></td>
+
+      <td th:text="${ledger.recordDate}"></td>
+
+      <td>
+        <a class="btn"
+           th:href="@{/ledger/detail(id=${ledger.id})}">
+          조회
+        </a>
+      </td>
+
+    </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+</body>
+
+</html>
