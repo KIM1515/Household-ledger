@@ -50,11 +50,73 @@
         ORDER BY total DESC
     </select>
 
+    <!-- 기간별 가계부 목록 -->
+    <select id="ledgerListByDate" resultType="com.project.Household.ledger.dto.Ledger">
+
+        SELECT
+            id,
+            type,
+            category,
+            amount,
+            memo,
+            record_date AS recordDate
+        FROM ledger
+        WHERE record_date BETWEEN #{startDate} AND #{endDate}
+        ORDER BY record_date DESC, id DESC
+
+    </select>
+
     <!--월 평균 지출-->
+    <!--
     <select id="avgMonthlyExpense" resultType="double">
         SELECT COALESCE(SUM(amount), 0) / GREATEST(COUNT(DISTINCT to_char(record_date,'YYYY-MM')), 1)
         FROM ledger
         WHERE type = 'EXPENSE'
     </select>
+    -->
+    <!-- 최근 N개월 월 평균 지출 -->
+    <select id="avgMonthlyExpense" resultType="double">
 
+        SELECT
+            COALESCE(SUM(amount), 0) / #{months}
+        FROM ledger
+        WHERE type = 'EXPENSE'
+          AND record_date >=
+              CURRENT_DATE - INTERVAL '1 month' * #{months}
+
+    </select>
+
+    <!-- 달력용 날짜별 지출 합계 -->
+    <select id="expenseByDate" resultType="map">
+
+        SELECT
+            record_date AS recordDate,
+            SUM(amount) AS total
+        FROM ledger
+        WHERE type = 'EXPENSE'
+          AND record_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY record_date
+        ORDER BY record_date
+
+    </select>
+
+    <select id="sumIncomeByDate" resultType="map">
+        SELECT
+            record_date AS "recordDate",
+            SUM(amount) AS total
+        FROM ledger
+        WHERE type = 'INCOME'
+        GROUP BY record_date
+        ORDER BY record_date
+    </select>
+
+    <select id="sumExpenseByDate" resultType="map">
+        SELECT
+            record_date AS "recordDate",
+            SUM(amount) AS total
+        FROM ledger
+        WHERE type = 'EXPENSE'
+        GROUP BY record_date
+        ORDER BY record_date
+    </select>
 </mapper>

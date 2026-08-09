@@ -227,7 +227,8 @@
 
             <input type="date"
                    id="recordDate"
-                   name="recordDate">
+                   name="recordDate"
+                   th:value="${selectedDate}">
 
         </div>
 
@@ -235,14 +236,16 @@
 
         <div class="btn-group">
 
+            <button type="button"
+                    onclick="location.href='/ledger/list'">
+                목록가기
+            </button>
+
             <button type="submit">
                 저장
             </button>
 
-            <button type="button"
-                    onclick="location.href='/ledger/list'">
-                조회하기
-            </button>
+
 
         </div>
 

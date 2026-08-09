@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,14 +22,35 @@ public class HtmlController {
     private final LedgerService ledgerService;
 
     @GetMapping("/")
-    public String indexHtml(){
+    public String indexHtml(Model model){
+        List<Map<String, Object>> incomeList =
+                ledgerService.sumIncomeByDate();
+
+        List<Map<String, Object>> expenseList =
+                ledgerService.sumExpenseByDate();
+
+        model.addAttribute("incomeList", incomeList);
+        model.addAttribute("expenseList", expenseList);
+
         return "index";
     }
 
     @GetMapping("/ledger")
-    public String ledgerHtml(){
+    public String ledgerHtml(
+            @RequestParam(required = false) String recordDate,
+            Model model) {
+
+        if (recordDate != null) {
+            model.addAttribute("selectedDate", recordDate);
+        }
+
         return "ledger";
     }
+
+//    @GetMapping("/ledger")
+//    public String ledgerHtml(){
+//        return "ledger";
+//    }
 
     // 상세 조회
     @GetMapping("/ledger/detail")
@@ -46,12 +70,13 @@ public class HtmlController {
         return "redirect:/ledger/detail?id=" + ledger.getId();
     }
 
-    @GetMapping("/ledger/list")
-    public String ledgerList(Model model) {
+    @GetMapping("/ledger/listall")
+    public String ledgerListAll(Model model) {
 
         List<Ledger> ledgerList = ledgerService.ledgerList();
 
         model.addAttribute("ledgerList", ledgerList);
+        model.addAttribute("all", true);
 
         return "list";
     }
@@ -82,5 +107,55 @@ public class HtmlController {
         ledgerService.deleteLedger(id);
 
         return "redirect:/ledger/list";
+    }
+
+    @GetMapping("/ledger/list")
+    public String ledgerList(
+            @RequestParam(required = false) String month,
+            Model model) {
+
+        // 아무것도 선택하지 않았으면 현재 월
+        if (month == null || month.isEmpty()) {
+            month = YearMonth.now().toString();
+        }
+
+        // "2026-08" → YearMonth
+        YearMonth yearMonth = YearMonth.parse(month);
+
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+
+        // 월별 가계부
+        List<Ledger> ledgerList =
+                ledgerService.ledgerListByDate(startDate, endDate);
+
+        // 카테고리별 지출 합계
+        List<Map<String, Object>> categoryList =
+                ledgerService.sumByCategory(startDate, endDate);
+
+        model.addAttribute("ledgerList", ledgerList);
+        model.addAttribute("categoryList", categoryList);
+
+        // 화면의 month input에 다시 표시
+        model.addAttribute("selectedMonth", month);
+
+        // 월별 조회
+        model.addAttribute("all", false);
+
+        return "list";
+    }
+
+    @GetMapping("/ledger/average")
+    public String averageExpense(
+            @RequestParam(defaultValue = "1") int months,
+            Model model) {
+
+        double avgMonthlyExpense =
+                ledgerService.avgMonthlyExpense(months);
+
+        model.addAttribute("avgMonthlyExpense", avgMonthlyExpense);
+        model.addAttribute("months", months);
+
+        return "average";
     }
 }

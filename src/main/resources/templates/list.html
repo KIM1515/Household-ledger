@@ -7,68 +7,70 @@
 
   <style>
 
-    body{
+    body {
       font-family: Arial, sans-serif;
-      background:#f5f6fa;
+      background: #f5f6fa;
     }
 
-    .container{
-      width:900px;
-      margin:50px auto;
+    .container {
+      width: 900px;
+      margin: 50px auto;
     }
 
-    h2{
-      text-align:center;
-      margin-bottom:30px;
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
     }
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      background:white;
-      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    th{
-      background:#4CAF50;
-      color:white;
-      padding:12px;
+    th {
+      background: #4CAF50;
+      color: white;
+      padding: 12px;
     }
 
-    td{
-      padding:12px;
-      border-bottom:1px solid #ddd;
-      text-align:center;
-    }
-
-    tr:hover{
-      background:#f9f9f9;
-    }
-
-    .income{
-      color:#2196F3;
-      font-weight:bold;
-    }
-
-    .expense{
-      color:#F44336;
-      font-weight:bold;
-    }
-
-    .btn{
-      text-decoration:none;
-      color:white;
-      background:#4CAF50;
-      padding:6px 12px;
-      border-radius:5px;
-    }
-    .btn-area {
-      margin-top: 25px;
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
       text-align: center;
     }
 
+    tr:hover {
+      background: #f9f9f9;
+    }
+
+    .income {
+      color: #2196F3;
+      font-weight: bold;
+    }
+
+    .expense {
+      color: #F44336;
+      font-weight: bold;
+    }
+
+    .btn {
+      text-decoration: none;
+      color: white;
+      background: #4CAF50;
+      padding: 6px 12px;
+      border-radius: 5px;
+    }
+
+    .btn-area {
+      margin-top: 25px;
+      display: flex;
+      gap: 15px;
+    }
+
     button {
-      width: 100%;
+      flex: 1;
       padding: 12px;
       border: none;
       border-radius: 8px;
@@ -76,6 +78,91 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #43a047;
+    }
+
+    .main-btn {
+      background-color: #607D8B;
+    }
+
+    .main-btn:hover {
+      background-color: #546E7A;
+    }
+
+    .search-area {
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .search-area select {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      margin-right: 5px;
+    }
+
+    .search-area button {
+      width: auto;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .search-area button:hover {
+      background-color: #43a047;
+    }
+
+    .summary {
+      margin-bottom: 30px;
+    }
+
+    .summary h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .summary-table th {
+      background: #607D8B;
+      color: white;
+      padding: 12px;
+    }
+
+    .summary-table td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    .list-filter {
+      margin-bottom: 15px;
+      padding: 12px 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .list-filter label {
+      margin-right: 20px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .list-filter input {
+      margin-right: 5px;
     }
   </style>
 
@@ -85,11 +172,136 @@
 
 <div class="container">
 
-  <h2>가계부 목록</h2>
+  <!-- ========================= -->
+  <!-- 제목 -->
+  <!-- ========================= -->
+
+  <!-- 월별 조회 -->
+  <h2 th:if="${all == false}">
+    <span th:text="${selectedMonth}"></span>월 가계부
+  </h2>
+
+  <!-- 전체 조회 -->
+  <h2 th:if="${all == true}">
+    전체 가계부 목록
+  </h2>
+
+
+  <!-- ========================= -->
+  <!-- 년 / 월 검색 -->
+  <!-- ========================= -->
+
+  <div class="search-area">
+
+    <form action="/ledger/list" method="get">
+
+      <input type="month"
+             name="month"
+             th:value="${selectedMonth}">
+
+      <button type="submit">
+        월별 조회
+      </button>
+
+
+      <!-- 전체 조회 -->
+      <button type="button"
+              class="all-btn"
+              onclick="location.href='/ledger/listall'">
+        전체 보기
+      </button>
+
+    </form>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- 월별 카테고리 지출 합계 -->
+  <!-- ========================= -->
+
+  <div class="summary" th:if="${all == false}">
+
+    <h3>
+      <span th:text="${selectedMonth}"></span>월
+      지출 합계
+    </h3>
+
+
+    <table class="summary-table">
+
+      <thead>
+      <tr>
+        <th>카테고리</th>
+        <th>지출 합계</th>
+      </tr>
+      </thead>
+
+
+      <tbody>
+
+      <tr th:each="category : ${categoryList}">
+
+        <td th:text="${category['category']}"></td>
+
+        <td th:text="${#numbers.formatInteger(category['total'], 3, 'COMMA') + '원'}"></td>
+
+      </tr>
+
+
+      <!-- 데이터가 없을 경우 -->
+      <tr th:if="${#lists.isEmpty(categoryList)}">
+
+        <td colspan="2">
+          해당 월의 지출 내역이 없습니다.
+        </td>
+
+      </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- 가계부 목록 -->
+  <!-- ========================= -->
+  <!-- 가계부 목록 필터 -->
+  <div class="list-filter">
+
+    <label>
+      <input type="radio"
+             name="listType"
+             value="ALL"
+             checked
+             onclick="filterLedger('ALL')">
+      전체
+    </label>
+
+    <label>
+      <input type="radio"
+             name="listType"
+             value="INCOME"
+             onclick="filterLedger('INCOME')">
+      수입
+    </label>
+
+    <label>
+      <input type="radio"
+             name="listType"
+             value="EXPENSE"
+             onclick="filterLedger('EXPENSE')">
+      지출
+    </label>
+
+  </div>
 
   <table>
 
     <thead>
+
     <tr>
       <th>번호</th>
       <th>구분</th>
@@ -99,32 +311,43 @@
       <th>날짜</th>
       <th>상세</th>
     </tr>
+
     </thead>
+
 
     <tbody>
 
-    <tr th:each="ledger : ${ledgerList}">
+    <tr th:each="ledger : ${ledgerList}"
+        th:attr="data-type=${ledger.type}">
 
       <td th:text="${ledger.id}"></td>
+
 
       <td
               th:text="${ledger.type == 'INCOME' ? '수입' : '지출'}"
               th:classappend="${ledger.type == 'INCOME'} ? 'income' : 'expense'">
       </td>
 
+
       <td th:text="${ledger.category}"></td>
+
 
       <td th:text="${#numbers.formatInteger(ledger.amount, 3, 'COMMA') + '원'}"></td>
 
+
       <td th:text="${ledger.memo}"></td>
+
 
       <td th:text="${ledger.recordDate}"></td>
 
+
       <td>
+
         <a class="btn"
            th:href="@{/ledger/detail(id=${ledger.id})}">
           조회
         </a>
+
       </td>
 
     </tr>
@@ -133,14 +356,61 @@
 
   </table>
 
+
+  <!-- ========================= -->
+  <!-- 하단 버튼 -->
+  <!-- ========================= -->
+
   <div class="btn-area">
-    <button type="button" onclick="location.href='/ledger'">
+
+    <button type="button"
+            onclick="location.href='/ledger'">
       입력하기
     </button>
 
+
+    <button type="button"
+            class="main-btn"
+            onclick="location.href='/'">
+      메인으로
+    </button>
+
   </div>
+
 </div>
 
+<script>
+
+  function filterLedger(type) {
+
+    const rows =
+            document.querySelectorAll(
+                    "tbody tr[data-type]"
+            );
+
+    rows.forEach(function(row) {
+
+      const ledgerType =
+              row.getAttribute("data-type");
+
+      if (type === "ALL") {
+
+        row.style.display = "";
+
+      } else if (ledgerType === type) {
+
+        row.style.display = "";
+
+      } else {
+
+        row.style.display = "none";
+
+      }
+
+    });
+
+  }
+</script>
 </body>
 
 </html>
