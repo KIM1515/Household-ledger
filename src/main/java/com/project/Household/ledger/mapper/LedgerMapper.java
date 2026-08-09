@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-@MapperScan
 public interface LedgerMapper {
     int insertLedger (Ledger ledger);
     int updateLedger(Ledger ledger);

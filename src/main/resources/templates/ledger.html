@@ -125,7 +125,23 @@
         .btn-group button:last-child:hover {
             background-color: #1976D2;
         }
+        select {
+            width: 100%;
+            padding: 12px;
 
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+            box-sizing: border-box;
+            font-size: 14px;
+
+            background-color: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
     </style>
 
 </head>
@@ -179,11 +195,15 @@
                 카테고리
             </label>
 
-            <input type="text"
-                   id="category"
-                   name="category"
-                   placeholder="식비, 교통비, 월급 등">
+            <select id="category"
+                    name="category"
+                    required>
 
+                <option value="">
+                    먼저 수입/지출을 선택하세요
+                </option>
+
+            </select>
         </div>
 
 
@@ -253,6 +273,110 @@
     </form>
 
 </div>
+<script>
 
+    // 수입 카테고리
+    const incomeCategories = [
+        "월급",
+        "상여금",
+        "용돈",
+        "이자",
+        "기타수입"
+    ];
+
+
+    // 지출 카테고리
+    const expenseCategories = [
+        "식비",
+        "교통비",
+        "쇼핑",
+        "월세",
+        "공과금",
+        "통신비",
+        "의료비",
+        "교육비",
+        "문화생활",
+        "생활용품",
+        "보험",
+        "기타지출"
+    ];
+
+
+    // 카테고리 select
+    const categorySelect =
+        document.getElementById("category");
+
+
+    // 수입/지출 라디오 버튼
+    const typeRadios =
+        document.querySelectorAll('input[name="type"]');
+
+
+    // 카테고리 변경 함수
+    function updateCategories(type) {
+
+        // 기존 카테고리 삭제
+        categorySelect.innerHTML = "";
+
+
+        // 기본 옵션
+        const defaultOption =
+            document.createElement("option");
+
+        defaultOption.value = "";
+
+        defaultOption.textContent =
+            "카테고리를 선택하세요";
+
+        defaultOption.disabled = true;
+
+        defaultOption.selected = true;
+
+        categorySelect.appendChild(defaultOption);
+
+
+        // 선택한 타입에 따라 카테고리 결정
+        let categories = [];
+
+        if (type === "INCOME") {
+
+            categories = incomeCategories;
+
+        } else if (type === "EXPENSE") {
+
+            categories = expenseCategories;
+
+        }
+
+
+        // 카테고리 생성
+        categories.forEach(function(category) {
+
+            const option =
+                document.createElement("option");
+
+            option.value = category;
+
+            option.textContent = category;
+
+            categorySelect.appendChild(option);
+
+        });
+
+    }
+
+
+    // 수입/지출 선택 이벤트
+    typeRadios.forEach(function(radio) {
+
+        radio.addEventListener("change", function() {
+
+            updateCategories(this.value);
+
+        });
+
+    });
+
+</script>
 </body>
 </html>

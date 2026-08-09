@@ -54,9 +54,18 @@ public class HtmlController {
 
     // 상세 조회
     @GetMapping("/ledger/detail")
-    public String ledgerDetail(@RequestParam Long id, Model model) {
+    public String ledgerDetail(@RequestParam(required = false) Long id, Model model) {
+
+        if (id == null) {
+            return "redirect:/ledger/list";
+        }
 
         Ledger ledger = ledgerService.ledgerDetail(id);
+
+        // 존재하지 않는 id인 경우
+        if (ledger == null) {
+            return "redirect:/ledger/list";
+        }
 
         model.addAttribute("ledger", ledger);
 
@@ -83,9 +92,18 @@ public class HtmlController {
 
     //수정
     @GetMapping("/ledger/edit")
-    public String edit(@RequestParam Long id, Model model){
+    public String edit(@RequestParam(required = false) Long id, Model model){
+
+        if (id == null) {
+            return "redirect:/ledger/list";
+        }
 
         Ledger ledger = ledgerService.ledgerDetail(id);
+
+        // 존재하지 않는 id인 경우
+        if (ledger == null) {
+            return "redirect:/ledger/list";
+        }
 
         model.addAttribute("ledger", ledger);
 
@@ -104,9 +122,13 @@ public class HtmlController {
     @PostMapping("/ledger/delete")
     public String delete(@RequestParam Long id, Model model){
 
-        ledgerService.deleteLedger(id);
+        int result = ledgerService.deleteLedger(id);
 
-        return "redirect:/ledger/list";
+        if (result == 0) {
+            return "redirect:/ledger/list?error=delete";
+        }
+
+        return "redirect:/ledger/list?success=delete";
     }
 
     @GetMapping("/ledger/list")
