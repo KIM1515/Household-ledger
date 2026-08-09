@@ -150,11 +150,22 @@ public class HtmlController {
             @RequestParam(defaultValue = "1") int months,
             Model model) {
 
+        if (months != 1 && months != 3 && months != 6 && months != 12) {
+            months = 1;
+        }
+
         double avgMonthlyExpense =
                 ledgerService.avgMonthlyExpense(months);
 
         model.addAttribute("avgMonthlyExpense", avgMonthlyExpense);
         model.addAttribute("months", months);
+
+        // 콤마가 들어간 금액
+        model.addAttribute(
+                "avgMonthlyExpenseFormatted",
+                String.format("%,.0f", avgMonthlyExpense)
+        );
+
 
         return "average";
     }
