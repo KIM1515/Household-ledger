@@ -81,4 +81,10 @@ public class LedgerService {
     public List<Map<String, Object>> sumExpenseByDate() {
         return ledgerMapper.sumExpenseByDate();
     }
+
+    public List<Map<String, Object>> avgExpenseByCategory(int months) {
+
+        return ledgerMapper.avgExpenseByCategory(months);
+
+    }
 }

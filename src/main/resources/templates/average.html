@@ -87,7 +87,48 @@
         .main-btn:hover {
             background: #546E7A;
         }
+        .category-analysis {
+            background: white;
 
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                    0 2px 10px rgba(0,0,0,0.08);
+
+            text-align: left;
+        }
+
+        .category-analysis h2 {
+            margin: 0 0 18px;
+
+            font-size: 20px;
+
+            color: #333;
+        }
+
+        .analysis-text {
+            background: #FFF3F3;
+
+            padding: 18px;
+
+            border-radius: 8px;
+
+            color: #555;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+        }
+
+        .analysis-text strong {
+            color: #F44336;
+
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -155,7 +196,29 @@
 
     </div>
 
+    <div class="category-analysis"
+         th:if="${categoryAverageList != null and !categoryAverageList.isEmpty()}">
 
+        <h2>📊 많이 지출한 카테고리</h2>
+
+        <div class="analysis-text">
+
+            최근
+            <span th:text="${months}"></span>
+            개월 동안
+
+            <strong th:text="${categoryAverageList[0]['category']}"></strong>
+            지출이 가장 많았으며,
+
+            월평균
+            <strong
+                    th:text="${#numbers.formatInteger(categoryAverageList[0]['monthly_avg'], 0, 'COMMA')}">
+            </strong>
+            원 정도를 지출하고 있습니다.
+
+        </div>
+
+    </div>
     <!-- 버튼 -->
     <div class="btn-area">
 

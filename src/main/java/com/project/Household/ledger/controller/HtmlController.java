@@ -176,10 +176,16 @@ public class HtmlController {
             months = 1;
         }
 
+        // 전체 월 평균 지출
         double avgMonthlyExpense =
                 ledgerService.avgMonthlyExpense(months);
 
+        // 카테고리별 평균 지출
+        List<Map<String, Object>> categoryAverageList =
+                ledgerService.avgExpenseByCategory(months);
+
         model.addAttribute("avgMonthlyExpense", avgMonthlyExpense);
+        model.addAttribute("categoryAverageList", categoryAverageList);
         model.addAttribute("months", months);
 
         // 콤마가 들어간 금액
