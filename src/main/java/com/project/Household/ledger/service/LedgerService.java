@@ -87,4 +87,36 @@ public class LedgerService {
         return ledgerMapper.avgExpenseByCategory(months);
 
     }
+
+    public double monthlyIncome() {
+
+        LocalDate startDate =
+                LocalDate.now().withDayOfMonth(1);
+
+        LocalDate endDate =
+                startDate.plusMonths(1);
+
+        return ledgerMapper.monthlyIncome(
+                startDate,
+                endDate
+        );
+    }
+
+    public double monthlyExpense() {
+
+        LocalDate startDate =
+                LocalDate.now().withDayOfMonth(1);
+
+        LocalDate endDate =
+                startDate.plusMonths(1);
+
+        return ledgerMapper.monthlyExpense(
+                startDate,
+                endDate
+        );
+    }
+
+    public List<Map<String, Object>> sumExpenseByCategory() {
+        return ledgerMapper.sumExpenseByCategory();
+    }
 }

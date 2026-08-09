@@ -39,4 +39,16 @@ public interface LedgerMapper {
     List<Map<String, Object>> sumExpenseByDate();
 
     List<Map<String, Object>> avgExpenseByCategory(@Param("months") int months);
+
+    double monthlyIncome(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
+
+    double monthlyExpense(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
+
+    List<Map<String, Object>> sumExpenseByCategory();
 }

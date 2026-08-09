@@ -137,4 +137,40 @@
         ]]>
 
     </select>
+
+    <select id="monthlyIncome" resultType="double">
+         <![CDATA[
+        SELECT COALESCE(SUM(amount), 0)
+        FROM ledger
+        WHERE type = 'INCOME'
+          AND record_date >= #{startDate}
+          AND record_date < #{endDate}
+        ]]>
+    </select>
+
+    <select id="monthlyExpense" resultType="double">
+        <![CDATA[
+        SELECT COALESCE(SUM(amount), 0)
+        FROM ledger
+        WHERE type = 'EXPENSE'
+          AND record_date >= #{startDate}
+          AND record_date < #{endDate}
+        ]]>
+    </select>
+
+    <select id="sumExpenseByCategory" resultType="map">
+
+        <![CDATA[
+        SELECT
+            category,
+            SUM(amount) AS total
+        FROM ledger
+        WHERE type = 'EXPENSE'
+          AND record_date >= DATE_TRUNC('month', CURRENT_DATE)
+          AND record_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+        GROUP BY category
+        ORDER BY total DESC
+        ]]>
+
+    </select>
 </mapper>

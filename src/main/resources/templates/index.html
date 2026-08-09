@@ -260,7 +260,66 @@
             font-weight: bold;
             margin-top: 5px;
         }
+        /* =========================
+           대시보드 요약 카드
+           ========================= */
 
+        .summary-area {
+            display: grid;
+
+            grid-template-columns:
+            repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                    0 2px 10px rgba(0, 0, 0, 0.08);
+
+            transition: 0.15s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        .summary-title {
+            font-size: 14px;
+
+            color: #888;
+
+            margin-bottom: 10px;
+        }
+
+        .summary-money {
+            font-size: 22px;
+
+            font-weight: bold;
+        }
+
+        .summary-income {
+            color: #2196F3;
+        }
+
+        .summary-expense {
+            color: #F44336;
+        }
+
+        .summary-balance {
+            color: #4CAF50;
+        }
     </style>
 
 </head>
@@ -282,7 +341,69 @@
 
     </h1>
 
+    <!-- 이번 달 요약 -->
+    <div class="summary-area">
 
+        <!-- 수입 -->
+        <div class="summary-card">
+
+            <div class="summary-title">
+                💰 이번 달 수입
+            </div>
+
+            <div class="summary-money summary-income">
+
+            <span th:text="${#numbers.formatInteger(monthlyIncome, 0, 'COMMA')}">
+                0
+            </span>
+
+                원
+
+            </div>
+
+        </div>
+
+
+        <!-- 지출 -->
+        <div class="summary-card">
+
+            <div class="summary-title">
+                💸 이번 달 지출
+            </div>
+
+            <div class="summary-money summary-expense">
+
+            <span th:text="${#numbers.formatInteger(monthlyExpense, 0, 'COMMA')}">
+                0
+            </span>
+
+                원
+
+            </div>
+
+        </div>
+
+
+        <!-- 잔액 -->
+        <div class="summary-card">
+
+            <div class="summary-title">
+                🌱 이번 달 남은 금액
+            </div>
+
+            <div class="summary-money summary-balance">
+
+            <span th:text="${#numbers.formatInteger(balance, 0, 'COMMA')}">
+                0
+            </span>
+
+                원
+
+            </div>
+
+        </div>
+
+    </div>
     <!-- 달력 -->
     <div class="calendar">
 

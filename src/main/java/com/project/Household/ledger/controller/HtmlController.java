@@ -23,16 +23,55 @@ public class HtmlController {
 
     @GetMapping("/")
     public String indexHtml(Model model){
+//        List<Map<String, Object>> incomeList =
+//                ledgerService.sumIncomeByDate();
+//
+//        List<Map<String, Object>> expenseList =
+//                ledgerService.sumExpenseByDate();
+//
+//        model.addAttribute("incomeList", incomeList);
+//        model.addAttribute("expenseList", expenseList);
+//
+//        return "index";
+        // 기존 데이터
         List<Map<String, Object>> incomeList =
                 ledgerService.sumIncomeByDate();
 
         List<Map<String, Object>> expenseList =
                 ledgerService.sumExpenseByDate();
 
+
+        // 이번 달 수입 / 지출
+        double monthlyIncome =
+                ledgerService.monthlyIncome();
+
+        double monthlyExpense =
+                ledgerService.monthlyExpense();
+
+
+        // 카테고리별 지출
+        List<Map<String, Object>> categoryExpenseList =
+                ledgerService.sumExpenseByCategory();
+
+
         model.addAttribute("incomeList", incomeList);
         model.addAttribute("expenseList", expenseList);
 
+        model.addAttribute("monthlyIncome", monthlyIncome);
+        model.addAttribute("monthlyExpense", monthlyExpense);
+
+        model.addAttribute(
+                "monthlyBalance",
+                monthlyIncome - monthlyExpense
+        );
+
+        model.addAttribute(
+                "categoryExpenseList",
+                categoryExpenseList
+        );
+
         return "index";
+
     }
 
     @GetMapping("/ledger")
